@@ -8,7 +8,7 @@ const BASE_URL = 'https://us-central1-vinci-dev-6e577.cloudfunctions.net/api/pub
  // Unpkg imports
 const Web3Modal = window.Web3Modal.default;
 const WalletConnectProvider = window.WalletConnectProvider.default;
-const EvmChains = window.EvmChains;
+const evmChains = window.evmChains;
 const Fortmatic = window.Fortmatic;
 
 // Web3modal instance
@@ -166,7 +166,7 @@ async function onConnect() {
   });
 
   // Subscribe to networkId change
-  provider.on("networkChanged", (networkId) => {
+  provider.on("chainChanged", (networkId) => {
     fetchAccountData();
   });
 
