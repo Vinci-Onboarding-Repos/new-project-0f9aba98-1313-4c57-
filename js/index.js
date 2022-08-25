@@ -45,13 +45,20 @@ function init() {
             options: {
               infuraId: "7550f76d68824553876499772c39974a",
             }
+        },
+
+        fortmatic: {
+          package: Fortmatic,
+          options: {
+            // Mikko's TESTNET api key
+            key: "pk_test_192C2AADC63DB766"
+          }
         }
     };
 
     web3Modal = new Web3Modal({
         cacheProvider: false, // optional
         providerOptions, // required
-        network: "polygon",
         disableInjectedProvider: false, // optional. For MetaMask / Brave / Opera.
     });
 
