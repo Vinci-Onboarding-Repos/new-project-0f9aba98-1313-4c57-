@@ -22,6 +22,7 @@ function init() {
 
     console.log("Initializing example");
     console.log("WalletConnectProvider is", WalletConnectProvider);
+    console.log("Fortmatic is", evmChains);
     console.log("Fortmatic is", Fortmatic);
     console.log("window.web3 is", window.web3, "window.ethereum is", window.ethereum);
 
