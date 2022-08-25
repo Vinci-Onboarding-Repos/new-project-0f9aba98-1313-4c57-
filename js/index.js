@@ -4,24 +4,17 @@ const BASE_URL = 'https://us-central1-vinci-dev-6e577.cloudfunctions.net/api/pub
 /**
  * Example JavaScript code that interacts with the page and Web3 wallets
  */
-
 // Unpkg imports
 const Web3Modal = window.Web3Modal.default;
 const WalletConnectProvider = window.WalletConnectProvider.default;
 const Fortmatic = window.Fortmatic;
 const evmChains = window.evmChains;
-
 // Web3modal instance
 let web3Modal
-
 // Chosen wallet provider given by the dialog window
 let provider;
-
-
 // Address of the selected account
 let selectedAccount;
-
-
 /**
  * Setup the orchestra
  */
