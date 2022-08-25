@@ -42,16 +42,7 @@ function init() {
         walletconnect: {
             package: WalletConnectProvider,
             options: {
-                // Mikko's test key - don't copy as your mileage may vary
-                infuraId: "8043bb2cf99347b1bfadfb233c5325c0",
-            }
-        },
-
-        fortmatic: {
-            package: Fortmatic,
-            options: {
-                // Mikko's TESTNET api key
-                key: "pk_test_391E26A3B43A3350"
+              infuraId: "7550f76d68824553876499772c39974a",
             }
         }
     };
@@ -59,6 +50,7 @@ function init() {
     web3Modal = new Web3Modal({
         cacheProvider: false, // optional
         providerOptions, // required
+        network: "polygon",
         disableInjectedProvider: false, // optional. For MetaMask / Brave / Opera.
     });
 
