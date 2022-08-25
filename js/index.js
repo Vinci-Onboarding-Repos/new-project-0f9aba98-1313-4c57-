@@ -8,7 +8,7 @@ const BASE_URL = 'https://us-central1-vinci-dev-6e577.cloudfunctions.net/api/pub
 const Web3Modal = window.Web3Modal.default;
 const WalletConnectProvider = window.WalletConnectProvider.default;
 const Fortmatic = window.Fortmatic;
-const evmChains = window.evmChains;
+const evmChains = window.EvmChains;
 // Web3modal instance
 let web3Modal
 // Chosen wallet provider given by the dialog window
