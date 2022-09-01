@@ -91,11 +91,11 @@ async function fetchAccountData() {
     // https://github.com/indutny/bn.js/
     const ethBalance = web3.utils.fromWei(balance, "ether");
     const humanFriendlyBalance = parseFloat(ethBalance).toFixed(4);
-    // Fill in the templated row and put in the document
-    const clone = template.content.cloneNode(true);
-    clone.querySelector(".address").textContent = address;
-    clone.querySelector(".balance").textContent = humanFriendlyBalance;
-    accountContainer.appendChild(clone);
+    // // Fill in the templated row and put in the document
+    // const clone = template.content.cloneNode(true);
+    // clone.querySelector(".address").textContent = address;
+    // clone.querySelector(".balance").textContent = humanFriendlyBalance;
+    // accountContainer.appendChild(clone);
   });
 
   // Because rendering account does its own RPC commucation
