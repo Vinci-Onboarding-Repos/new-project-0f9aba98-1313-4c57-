@@ -66,8 +66,6 @@ async function onConnect() {
   provider.on("chainChanged", (networkId) => {
     fetchAccountData();
   });
-
-  await refreshAccountData();
 }
 
 
