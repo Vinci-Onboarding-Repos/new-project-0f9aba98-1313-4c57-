@@ -5,19 +5,31 @@ const BASE_URL = 'https://us-central1-vinci-dev-6e577.cloudfunctions.net/api/pub
  * Example JavaScript code that interacts with the page and Web3 wallets
  */
 
-// Unpkg imports
+ // Unpkg imports
 const Web3Modal = window.Web3Modal.default;
 const WalletConnectProvider = window.WalletConnectProvider.default;
 const evmChains = window.evmChains;
 const Fortmatic = window.Fortmatic;
+
+// Web3modal instance
 let web3Modal
+
+// Chosen wallet provider given by the dialog window
 let provider;
+
+
+// Address of the selected account
+let selectedAccount;
 
 
 /**
  * Setup the orchestra
  */
 function init() {
+
+  console.log("Initializing example");
+  console.log("WalletConnectProvider is", WalletConnectProvider);
+  console.log("Fortmatic is", Fortmatic);
 
   // Tell Web3modal what providers we have available.
   // Built-in web browser provider (only one can exist as a time)
@@ -39,6 +51,45 @@ function init() {
 
 }
 
+
+/**
+ * Kick in the UI action after Web3modal dialog has chosen a provider
+ */
+async function fetchAccountData() {
+
+  // Get a Web3 instance for the wallet
+  const web3 = new Web3(provider);
+
+  console.log("Web3 instance is", web3);
+
+  // Get connected chain id from Ethereum node
+  const chainId = await web3.eth.getChainId();
+  // Load chain information over an HTTP API
+  const chainData = await evmChains.getChain(chainId);
+
+  // Get list of accounts of the connected wallet
+  const accounts = await web3.eth.getAccounts();
+
+  // MetaMask does not give you all accounts, only the selected account
+  console.log("Got accounts", accounts);
+  console.log("Got accounts", chainData);
+  selectedAccount = accounts[0];
+
+}
+
+
+
+/**
+ * Fetch account data for UI when
+ * - User switches accounts in wallet
+ * - User switches networks in wallet
+ * - User connects wallet initially
+ */
+async function refreshAccountData() {
+  await fetchAccountData(provider);
+}
+
+
 /**
  * Connect wallet button pressed.
  */
@@ -47,7 +98,7 @@ async function onConnect() {
   console.log("Opening a dialog", web3Modal);
   try {
     provider = await web3Modal.connect();
-  } catch (e) {
+  } catch(e) {
     console.log("Could not get a wallet connection", e);
     return;
   }
@@ -66,6 +117,34 @@ async function onConnect() {
   provider.on("chainChanged", (networkId) => {
     fetchAccountData();
   });
+
+  await refreshAccountData();
+}
+
+/**
+ * Disconnect wallet button pressed.
+ */
+async function onDisconnect() {
+
+  console.log("Killing the wallet connection", provider);
+
+  // TODO: Which providers have close method?
+  if(provider.close) {
+    await provider.close();
+
+    // If the cached provider is not cleared,
+    // WalletConnect will default to the existing session
+    // and does not allow to re-scan the QR code with a new wallet.
+    // Depending on your use case you may want or want not his behavir.
+    await web3Modal.clearCachedProvider();
+    provider = null;
+  }
+
+  selectedAccount = null;
+
+  // Set the UI back to the initial state
+  document.querySelector("#prepare").style.display = "block";
+  document.querySelector("#connected").style.display = "none";
 }
 
 
@@ -78,19 +157,19 @@ window.addEventListener('load', async () => {
 });
 
 const fetchUsers = () => {
-  console.log(window.location.href.split('/')[window.location.href.split('/').length - 1]);
-  console.log(window.location.href);
-  axios.get(BASE_URL, {
-    params: {
-      url: window.location.href,
-      API_KEY: 'VINCI_DEV_6E577'
-    }, headers: { "Access-Control-Allow-Origin": "*" }
-  })
-    .then(response => {
-      const users = response.data.data;
-      console.log(`GET list users`, users);
+    console.log(window.location.href.split('/')[window.location.href.split('/').length - 1]);
+    console.log(window.location.href);
+    axios.get(BASE_URL, {
+        params: {
+            url: window.location.href,
+            API_KEY: 'VINCI_DEV_6E577'
+        }, headers: { "Access-Control-Allow-Origin": "*" }
     })
-    .catch(error => console.error(error));
+        .then(response => {
+            const users = response.data.data;
+            console.log(`GET list users`, users);
+        })
+        .catch(error => console.error(error));
 };
 
 fetchUsers();
